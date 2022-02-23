@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Color Compare Example Page</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html, body {
+            background: black;
+        }
+        .container {
+            display: flex;
+            position: relative;
+        }
+        .container > div {
+            flex-grow: 1;
+        }
+        .container > .black-bg {
+            position: absolute;
+            width: 25%;
+            height: 100%;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0);
+            top: 0;
+            left: 25%;
+            z-index: -1;
+        }
+        .container > div > div {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+
+        }
+        .container > div > div:not(:last-child) {
+            margin-right: 20px;
+        }
+        .container > div > div > div {
+            width: 50%;
+            height: 100px;
+        }
+        .container > div.css-backgrounds > div > div {
+            margin-left: 50%;
+        }
+        .container > div.computed-values > div > div {
+            margin-right: 50%;
+        }
+
+        .css-backgrounds > .css-1 {
+            background: rgba(255, 0, 0, 1);
+        }
+        .css-backgrounds > .css-1 > div {
+            background: rgba(0, 128, 0, 1);
+        }
+        .css-backgrounds > .css-2 {
+            background: rgba(255, 0, 0, 1);
+        }
+        .css-backgrounds > .css-2 > div {
+            background: rgba(0, 128, 0, .5);
+        }
+        .css-backgrounds > .css-3 {
+            background: rgba(255, 0, 0, .5);
+        }
+        .css-backgrounds > .css-3 > div {
+            background: rgba(0, 128, 0, .5);
+        }
+
+    </style>
+</head>
+<body>
+<div id="app"></div>
+<div class="container">
+    <div class="black-bg"></div>
+    <div class="css-backgrounds">
+        <div class="css-1"><div></div></div>
+        <div class="css-2"><div></div></div>
+        <div class="css-3"><div></div></div>
+        <div class="css-3"><div></div></div>
+        <div class="css-3"><div></div></div>
+    </div>
+    <div class="computed-values">
+        <div id="computed-1"><div></div></div>
+        <div id="computed-2"><div></div></div>
+        <div id="computed-3"><div></div></div>
+        <div id="computed-32"><div></div></div>
+        <div id="computed-33"><div></div></div>
+    </div>
+</div>
+<script type="module">
+    import { Color } from './src/color';
+
+    function processComposition(id, color) {
+        const computed = document.querySelector<HTMLDivElement>(id);
+        if (!computed) {
+            throw new Error(`Computed element (${id}) not found`);
+        }
+        const computedChild = computed.querySelector<HTMLDivElement>('div');
+        if (!computedChild) {
+            throw new Error(`Computed child element (${id}) not found`);
+        }
+        const colorRGBA = color.rgba;
+        computedChild.style.background = `rgba(${colorRGBA[0]}, ${colorRGBA[1]}, ${colorRGBA[2]}, ${colorRGBA[3]})`;
+    }
+
+    processComposition('#computed-1', new Color('rgba(0, 128, 0, 1)', new Color('rgba(255, 0, 0, 1)')));
+    processComposition('#computed-2', new Color('rgba(0, 128, 0, .5)', new Color('rgba(255, 0, 0, 1)')));
+    processComposition('#computed-3', new Color('rgba(0, 128, 0, .5)', new Color('rgba(255, 0, 0, .5)')));
+    processComposition('#computed-32', new Color('rgba(0, 128, 0, .5)', new Color('rgba(255, 0, 0, .5)', 'white')));
+    processComposition('#computed-33', new Color('rgba(0, 128, 0, .5)', new Color('rgba(255, 0, 0, .5)', 'black')));
+</script>
+</body>
+</html>
