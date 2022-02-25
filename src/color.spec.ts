@@ -41,6 +41,19 @@ describe('Color class', () => {
             expect(new Color('rgba(255, 128, 0, .5)').rgba).toStrictEqual([ 255, 128, 0, .5 ]);
         });
 
+        it('should convert 8bit hex to rgba', () => {
+            expect(new Color('#ffffff').rgba).toStrictEqual([ 255, 255, 255, 1 ]);
+            expect(new Color('#000000').rgba).toStrictEqual([ 0, 0, 0, 1 ]);
+            expect(new Color('#ff8800').rgba).toStrictEqual([ 255, 136, 0, 1 ]);
+            expect(new Color('#f8800f').rgba).toStrictEqual([ 248, 128, 15, 1 ]);
+        });
+
+        it('should convert 4bit hex to rgba', () => {
+            expect(new Color('#fff').rgba).toStrictEqual([ 255, 255, 255, 1 ]);
+            expect(new Color('#000').rgba).toStrictEqual([ 0, 0, 0, 1 ]);
+            expect(new Color('#f80').rgba).toStrictEqual([ 255, 136, 0, 1 ]);
+        });
+
     })
 
     describe('merging colors', () => {
@@ -82,23 +95,37 @@ describe('Color class', () => {
 
             expect(result).toHaveProperty('wcagConformance', false);
             expect(result).toHaveProperty('wcagConformancePerPerceivable.contrast', false);
-            expect(result.rawPerceivableValues.contrast).toBeCloseTo(1.00);
+            expect(result.rawPerceivableValues.contrast).toBeCloseTo(1.07);
         });
 
         it('should succeed for red on green', () => {
             const result = new Color('#ff0000').compare(new Color('#00ff00'));
 
-            expect(result).toHaveProperty('wcagConformance', 'aaa');
-            expect(result).toHaveProperty('wcagConformancePerPerceivable.contrast', 'aaa');
-            expect(result.rawPerceivableValues.contrast).toBeCloseTo(8.00);
+            expect(result).toHaveProperty('wcagConformance', false);
+            expect(result).toHaveProperty('wcagConformancePerPerceivable.contrast', false);
+            expect(result.rawPerceivableValues.contrast).toBeCloseTo(2.91);
         });
 
         it('should be just acceptable for gray on yellow', () => {
-            const result = new Color('#898989').compare(new Color('#ffff00'));
+            const result = new Color('#8f8f8f').compare(new Color('#ffff00'));
 
             expect(result).toHaveProperty('wcagConformance', 'a');
             expect(result).toHaveProperty('wcagConformancePerPerceivable.contrast', 'a');
-            expect(result.rawPerceivableValues.contrast).toBeCloseTo(3.02);
+            expect(result.rawPerceivableValues.contrast).toBeCloseTo(3.01);
+        });
+
+        it('should be just acceptable for a specifc gray-ish color on white', () => {
+            const grayish = new Color('#6e7b8c');
+            const white = new Color('#ffffff');
+
+            expect(grayish).toHaveProperty('rgba', [110, 123, 140, 1]);
+            expect(white).toHaveProperty('rgba', [255, 255, 255, 1]);
+
+            const result = grayish.compare(white);
+
+            expect(result).toHaveProperty('wcagConformance', 'a');
+            expect(result).toHaveProperty('wcagConformancePerPerceivable.contrast', 'a');
+            expect(result.rawPerceivableValues.contrast).toBeCloseTo(4.31);
         });
 
     });

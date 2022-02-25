@@ -284,7 +284,7 @@ const css1: IColorsCSS1 = {
         name: 'hex',
         validator: (value: string): boolean => /^\s*#?(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})\s*$/.test(value),
         transformer: (value: string): null | string => {
-            const match = value.match(/^\s*#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})\s*/);
+            const match = value.match(/^\s*#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})\s*$/);
 
             if (!match) {
                 return null;
