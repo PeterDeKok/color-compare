@@ -1,6 +1,6 @@
 {
     "name": "@peterdekok/color-compare",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "license": "MIT",
     "description": "Compare colors to one another. Especially useful for validating color input fields.",
     "keywords": [
