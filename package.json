@@ -29,8 +29,8 @@
     "types": "./lib/color.d.ts",
     "exports": {
         ".": {
-            "import": "./lib/ot-localization.es.js",
-            "require": "./lib/ot-localization.umd.js"
+            "import": "./lib/color-compare.es.js",
+            "require": "./lib/color-compare.umd.js"
         }
     },
     "repository": "git@github.com:PeterDeKok/color-compare.git",
